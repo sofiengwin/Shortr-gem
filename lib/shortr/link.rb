@@ -14,7 +14,6 @@ module Shortr
     end
 
     def create_shortr_link(full_url, vanity_string = nil)
-      # return false if (vanity_string.nil? )
       params = {
         "link[full_url]" => full_url,
         "link[short_url]" => vanity_string,
@@ -24,7 +23,7 @@ module Shortr
     end
 
     def change_short_status(full_url, new_active)
-      return false if (new_active.nil? )
+      return false if (new_active.nil? && has_no_token_error)
       params = {
         "link[full_url]" => full_url,
         "link[old]" => get_old_short(full_url),
@@ -35,7 +34,7 @@ module Shortr
     end
 
     def change_short_target(full_url, new_target)
-      return false if (new_target.nil? )
+      return false if (new_target.nil? && has_no_token_error)
       params = {
         "link[full_url]" => full_url,
         "link[old]" => get_old_short(full_url),
@@ -46,6 +45,7 @@ module Shortr
     end
 
     def delete_short(full_url)
+      return false if has_no_token_error
       params = {
         "link[full_url]" => full_url,
         "link[old]" => get_old_short(full_url),
@@ -61,13 +61,13 @@ module Shortr
 
     def process_response(response)
       response = JSON.parse(response.body)
-      # @status = parse_status(response)
+      @status = parse_status(response)
       # @response = response['short_url']
    end
 
     def has_no_token_error
       if !token || token == 0
-        @status = { type: 'error', info: 'Request requires a valid user token.' }
+        @status = { status: 'error', status_info: 'Request requires a valid user token.' }
         return true
       end
       false
@@ -84,6 +84,6 @@ module Shortr
   end
 end
 
-# puts Shortr::Link.new.create_shortr_link("http://facebook.com")
+# puts Shortr::Link.new.create_shortr_link("http://facebook.com", "james")
 # token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-# puts Shortr::Link.new(token).change_short_target("http://localhost:3000/confirm", "api_token")
+# puts Shortr::Link.new.change_short_target("http://localhost.com/confirm", "api_token")
