@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+require "shortr"
+require 'optparse'
+
+  class LinkShortr
+    def parser
+      options = {}
+      opt_parser = OptionParser.new do |option|
+        option.banner = 'Usage: years.rb [options]'
+        option.on('-f full_url') do |full_url|
+          options[:full_url] = full_url
+        end
+
+        option.on('-s short_url') do |short_url|
+          options[:short_url] = short_url
+        end
+
+        option.on('-k key') do |key|
+          options[:key] = key
+        end
+
+        option.on('-h') do
+          puts 'This the help message'
+          exit
+        end
+      end
+
+      opt_parser.parse(ARGV)
+      if options[:full_url].nil?
+        puts 'Provide link to be shortened'
+        options[:full_url] = gets.chomp
+      end
+
+      Shortr::Link.new.create_shortr_link(options[:full_url])
+    end
+  end
+
+  puts LinkShortr.new.parser
