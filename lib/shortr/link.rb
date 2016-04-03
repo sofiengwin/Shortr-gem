@@ -55,9 +55,9 @@ module Shortr
       process_response connection.patch("/api/links/ss", params)
     end
 
-    def make_get_request(request)
-      process_response(connection.get(request))
-    end
+    # def make_get_request(request)
+    #   process_response(connection.get(request))
+    # end
 
     def process_response(response)
       response = JSON.parse(response.body)
@@ -74,7 +74,7 @@ module Shortr
     end
 
     def parse_status(response)
-      { type: response['status'], info: response['status_info'] }
+      { status: response['status'], status_info: response['status_info'], short_url: response["short_url"] }
    end
 
    def get_old_short(full_url)
@@ -83,7 +83,3 @@ module Shortr
 
   end
 end
-
-# puts Shortr::Link.new.create_shortr_link("http://facebook.com", "james")
-# token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-# puts Shortr::Link.new.change_short_target("http://localhost.com/confirm", "api_token")
