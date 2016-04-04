@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: http://localhost:3000/api/links
+    uri: http://shotr.herokuapp.com/api/links
     body:
       encoding: UTF-8
-      string: api_token=lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y&link%5Bfull_url%5D=http%3A%2F%2Ffacebook.com&link%5Bshort_url%5D=targeted
+      string: link%5Bapi_key%5D=esZOMuf-bOdUZnYDar856PNDGeMP4K8qPQIIpr6w6gMCDq8_DEgokCjp2ybUE_eM&link%5Bfull_url%5D=http%3A%2F%2Ffacebook.com&link%5Bshort_url%5D=targeted
     headers:
       User-Agent:
       - Faraday v0.9.2
@@ -20,6 +20,8 @@ http_interactions:
       code: 200
       message: 'OK '
     headers:
+      Connection:
+      - keep-alive
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
@@ -29,34 +31,34 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - W/"2336f5ae42a96abe67d2c8240603af51"
+      - W/"a0fdcc4b44dac47132e0a1ebef9af84b"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 4b623a3b-0451-4142-ae27-ea91698ec0d0
+      - f9c7a7f4-ae67-4759-82fb-ae3f696c7926
       X-Runtime:
-      - '0.005107'
+      - '0.010122'
       Server:
       - WEBrick/1.3.1 (Ruby/2.3.0/2015-12-25)
       Date:
-      - Sun, 03 Apr 2016 07:55:21 GMT
+      - Mon, 04 Apr 2016 21:12:35 GMT
       Content-Length:
-      - '94'
-      Connection:
-      - Keep-Alive
+      - '99'
       Set-Cookie:
       - request_method=POST; path=/
+      Via:
+      - 1.1 vegur
     body:
       encoding: UTF-8
-      string: '{"status":500,"status_info":"Could not create new short","short_url":"http://localhost:3000/"}'
+      string: '{"status":500,"status_info":"Could not create new short","short_url":"http://shotr.herokuapp.com/"}'
     http_version: 
-  recorded_at: Sun, 03 Apr 2016 07:55:21 GMT
+  recorded_at: Mon, 04 Apr 2016 21:12:35 GMT
 - request:
     method: patch
-    uri: http://localhost:3000/api/links/ss
+    uri: http://shotr.herokuapp.com/api/links/ss
     body:
       encoding: UTF-8
-      string: api_token=lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y&link%5Bfull_url%5D=http%3A%2F%2Flocalhost%3A3000%2Ftargeted&link%5Bold%5D=targeted&link%5Bshort_url%5D=target_changed
+      string: link%5Bapi_key%5D=esZOMuf-bOdUZnYDar856PNDGeMP4K8qPQIIpr6w6gMCDq8_DEgokCjp2ybUE_eM&link%5Bfull_url%5D=http%3A%2F%2Fshotr.herokuapp.com%2Ftargeted&link%5Bold%5D=targeted&link%5Bshort_url%5D=target_changed
     headers:
       User-Agent:
       - Faraday v0.9.2
@@ -71,6 +73,8 @@ http_interactions:
       code: 200
       message: 'OK '
     headers:
+      Connection:
+      - keep-alive
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
@@ -80,26 +84,26 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - W/"f4e212fc3869342bda244b619439a8a1"
+      - W/"cbadf03aaf744bc94f3ec5462ba4f34d"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - b177cb49-0c94-4227-bacf-a645ea04c76e
+      - d2a24b43-15c5-47ee-acce-ce9a8d957b45
       X-Runtime:
-      - '0.004559'
+      - '0.041479'
       Server:
       - WEBrick/1.3.1 (Ruby/2.3.0/2015-12-25)
       Date:
-      - Sun, 03 Apr 2016 07:55:21 GMT
+      - Mon, 04 Apr 2016 21:12:35 GMT
       Content-Length:
-      - '102'
-      Connection:
-      - Keep-Alive
+      - '117'
       Set-Cookie:
       - request_method=PATCH; path=/
+      Via:
+      - 1.1 vegur
     body:
       encoding: UTF-8
-      string: '{"status":500,"status_info":"Please use the correct link format","short_url":"http://localhost:3000/"}'
+      string: '{"status":201,"status_info":"Successfully edited your short","short_url":"http://shotr.herokuapp.com/target_changed"}'
     http_version: 
-  recorded_at: Sun, 03 Apr 2016 07:55:21 GMT
+  recorded_at: Mon, 04 Apr 2016 21:12:35 GMT
 recorded_with: VCR 2.9.3

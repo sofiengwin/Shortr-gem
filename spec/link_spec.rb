@@ -1,7 +1,10 @@
 require "spec_helper"
+require_relative "support"
 
 describe Shortr::Link do
-  subject{ Shortr::Link.new}
+  subject { Shortr::Link.new }
+  token = "esZOMuf-bOdUZnYDar856PNDGeMP4K8qPQIIpr6w6gMCDq8_DEgokCjp2ybUE_eM"
+  let(:new_short_with_token) { Shortr::Link.new(token) }
 
   describe "#new" do
     it { is_expected.to be_an_instance_of Shortr::Link }
@@ -20,10 +23,8 @@ describe Shortr::Link do
     context "Registered users can use their api key to create short with vanity string" do
       it "allows registered users to create new short with vanity string if they provide a token" do
         VCR.use_cassette("new_short_with_token") do
-          token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-          new_short_with_token = Shortr::Link.new(token)
-          response = new_short_with_token.create_shortr_link("http://facebook.com", "facetest")
-          expect(response[:short_url]).to eq("http://localhost:3000/facetest")
+          response = new_short_with_token.create_shortr_link("http://facebook.com", "fb2")
+          expect(response[:short_url]).to eq("http://shotr.herokuapp.com/fb2")
         end
       end
     end
@@ -33,22 +34,17 @@ describe Shortr::Link do
     context "Using valid arguments" do
       it "allows registered users to change the target of their short link" do
         VCR.use_cassette("change_short_status") do
-          token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-          new_short_with_token = Shortr::Link.new(token)
-          new_short_with_token.create_shortr_link("http://facebook.com", "targeted")
-          response = new_short_with_token.change_short_status("http://localhost:3000/facetest", false)
-          expect(response).to eq("test")
+          new_short_with_token.create_shortr_link("http://facebook.com", "change_status2")
+          response = new_short_with_token.change_short_status("http://shotr.herokuapp.com/change_status2", false)
+          expect(response[:status_info]).to eq("Successfully edited your short")
         end
       end
     end
 
     context "throws an error with invalid arguments" do
-      it "allows registered users to change the target of their short link" do
+      it "should throw an  error when an invalid full url is supplied" do
         VCR.use_cassette("change_short_status_with_invalid_arguments") do
-          token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-          new_short_with_token = Shortr::Link.new(token)
-          new_short_with_token.create_shortr_link("http://facebook.com", "targeted")
-          response = new_short_with_token.change_short_status("http://localhost:3000/facetest", false)
+          response = new_short_with_token.create_shortr_link("http:/facebook.com", "cannot_change2")
           expect(response[:status_info]).to eq("Please use the correct link format")
         end
       end
@@ -59,10 +55,8 @@ describe Shortr::Link do
     context "Registered User" do
       it "registered users can change the target of their short links" do
         VCR.use_cassette("registered_user_change_short_target") do
-          token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-          new_short_with_token = Shortr::Link.new(token)
           new_short_with_token.create_shortr_link("http://facebook.com", "targeted")
-          response = new_short_with_token.change_short_target("http://localhost:3000/targeted", "target_changed")
+          response = new_short_with_token.change_short_target("http://shotr.herokuapp.com/targeted", "target_changed")
         end
       end
     end
@@ -71,8 +65,8 @@ describe Shortr::Link do
       it "anonymous users cannot change the target of their short links" do
         VCR.use_cassette("anonymous_cannot_user_change_short_target") do
           subject.create_shortr_link("http://facebook.com")
-          response = subject.change_short_target("http://localhost:3000/targeted", "target_changed")
-          expect(response).to eq("test")
+          response = subject.change_short_target("http://shotr.herokuapp.com/targeted", "target_changed")
+          expect(response[:status_info]).to eq("You need a valid API Key to update a link")
         end
       end
     end
@@ -81,11 +75,9 @@ describe Shortr::Link do
     context "Registered User" do
       it "registered users can delete of their short links" do
         VCR.use_cassette("registered_user_can_delete_short") do
-          token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-          new_short_with_token = Shortr::Link.new(token)
-          new_short_with_token.create_shortr_link("http://facebook.com", "delete_targeted")
-          response = new_short_with_token.delete_short("http://localhost:3000/targeted")
-          expect(response).to eq("test")
+          new_short_with_token.create_shortr_link("http://facebook.com", "delete_targeted2")
+          response = new_short_with_token.delete_short("http://shotr.herokuapp.com/delete_targeted2")
+          expect(response[:status_info]).to eq("Successfully edited your short")
         end
       end
     end
@@ -94,14 +86,10 @@ describe Shortr::Link do
       it "anonymous users cannot change the target of their short links" do
         VCR.use_cassette("anonymous_cannot_delete_short") do
           subject.create_shortr_link("http://facebook.com")
-          response = subject.delete_short("http://localhost:3000/targeted")
-          expect(response).to eq("test")
+          response = subject.delete_short("http://shotr.herokuapp.com/targeted")
+          expect(response).to eq(false)
         end
       end
     end
   end
-
-
-
-
 end
