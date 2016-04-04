@@ -1,7 +1,5 @@
 require "json"
 require "faraday"
-require "byebug"
-require "pry"
 
 API_URL = "http://shotr.herokuapp.com/".freeze
 module Shortr
@@ -63,7 +61,6 @@ module Shortr
     def process_response(response)
       response = JSON.parse(response.body)
       @status = parse_status(response)
-     # @response = response['short_url']
    end
 
     def has_no_token_error
@@ -83,6 +80,3 @@ module Shortr
     end
   end
 end
-# token = "lvj5eJA3o-iCtX23pJDg0_slM_AEvFp3EercI761ItffMoKgZ5C50IbI-pGRx13Y"
-# puts Shortr::Link.new(token).create_shortr_link("http://facebook.com", "fbtest2")
-# puts Shortr::Link.new(token).change_short_target("http://shotr.herokuapp.com/fbtest", "fbtest2")
